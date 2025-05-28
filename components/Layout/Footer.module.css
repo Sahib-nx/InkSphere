@@ -1,13 +1,19 @@
-:global(:root) {
-  --primary-color: #5e60ce;
-  --primary-light: #7400b8;
-  --secondary-color: #48bfe3;
-  --text-color: #333;
-  --text-light: #666;
-  --primary-dim: #4a4cb8;
-  --primary-light-dim: #5a0091;
-  --secondary-dim: #3a9bc4;
+.localWrapper {
+
+  :global(:root) {
+    --primary-color: #5e60ce;
+    --primary-light: #7400b8;
+    --secondary-color: #48bfe3;
+    --text-color: #333;
+    --text-light: #666;
+    --primary-dim: #4a4cb8;
+    --primary-light-dim: #5a0091;
+    --secondary-dim: #3a9bc4;
+  }
+
 }
+
+
 
 .footer {
   /* background: linear-gradient(
@@ -18,7 +24,7 @@
     var(--primary-light) 75%,
     var(--secondary-dim) 100%
   ); */
-  background:  linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 4rem 0 0;
   position: relative;
@@ -33,7 +39,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
+  background:
     radial-gradient(circle at 20% 80%, rgba(72, 191, 227, 0.3) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(116, 0, 184, 0.3) 0%, transparent 50%),
     radial-gradient(circle at 40% 40%, rgba(94, 96, 206, 0.2) 0%, transparent 50%);
@@ -84,10 +90,13 @@
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
     opacity: 0.3;
   }
+
   50% {
     transform: translateY(-20px) rotate(180deg);
     opacity: 0.6;
@@ -125,9 +134,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, 
-    rgba(94, 96, 206, 0.2) 0%, 
-    rgba(72, 191, 227, 0.2) 100%);
+  background: linear-gradient(135deg,
+      rgba(94, 96, 206, 0.2) 0%,
+      rgba(72, 191, 227, 0.2) 100%);
   border-radius: 16px;
   border: 2px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -142,12 +151,10 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent);
   transition: left 0.8s ease;
 }
 
@@ -158,7 +165,7 @@
 .logoImageWrapper:hover {
   transform: scale(1.05);
   border-color: rgba(72, 191, 227, 0.4);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(94, 96, 206, 0.3),
     0 0 20px rgba(72, 191, 227, 0.2);
 }
@@ -183,7 +190,8 @@
   font-size: 2rem;
   color: var(--secondary-color);
   filter: drop-shadow(0 0 10px rgba(72, 191, 227, 0.5));
-  display: none; /* Hidden by default, shown when image fails */
+  display: none;
+  /* Hidden by default, shown when image fails */
   transition: all 0.3s ease;
 }
 
@@ -197,12 +205,10 @@
   font-size: 2rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    var(--secondary-color) 50%,
-    #ffffff 100%
-  );
+  background: linear-gradient(135deg,
+      #ffffff 0%,
+      var(--secondary-color) 50%,
+      #ffffff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -343,12 +349,10 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
   transition: left 0.5s ease;
 }
 
@@ -358,19 +362,17 @@
 
 .socialLink:hover {
   transform: translateY(-3px);
-  box-shadow: 
+  box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.2),
     0 0 20px rgba(72, 191, 227, 0.3);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
 .footerBottom {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.2) 50%,
-    rgba(0, 0, 0, 0.3) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.3) 100%);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 2rem 0;
@@ -425,12 +427,10 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
   transition: left 0.5s ease;
 }
 
@@ -440,7 +440,7 @@
 
 .backToTop:hover {
   transform: translateY(-5px);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(94, 96, 206, 0.4),
     0 0 30px rgba(72, 191, 227, 0.3);
 }
@@ -451,7 +451,7 @@
     grid-template-columns: 2fr 1fr;
     gap: 3rem;
   }
-  
+
   .socialSection {
     grid-column: span 2;
     margin-top: 2rem;
@@ -462,39 +462,39 @@
   .footer {
     padding: 3rem 0 0;
   }
-  
+
   .footerContent {
     grid-template-columns: 1fr;
     gap: 2.5rem;
     padding: 0 1rem;
   }
-  
+
   .socialSection {
     grid-column: span 1;
     margin-top: 0;
   }
-  
+
   .logoImageWrapper {
     width: 50px;
     height: 50px;
   }
-  
+
   .logoIconFallback {
     font-size: 1.5rem;
   }
-  
+
   .brandStats {
     justify-content: space-between;
     max-width: 300px;
   }
-  
+
   .bottomContent {
     flex-direction: column;
     gap: 1.5rem;
     text-align: center;
     padding: 0 1rem;
   }
-  
+
   .socialLinks {
     justify-content: center;
   }
@@ -504,28 +504,28 @@
   .brandTitle {
     font-size: 1.5rem;
   }
-  
+
   .logoImageWrapper {
     width: 45px;
     height: 45px;
   }
-  
+
   .logoIconFallback {
     font-size: 1.3rem;
   }
-  
+
   .brandStats {
     gap: 1rem;
   }
-  
+
   .statNumber {
     font-size: 1.2rem;
   }
-  
+
   .socialLinks {
     gap: 0.75rem;
   }
-  
+
   .socialLink {
     width: 45px;
     height: 45px;
