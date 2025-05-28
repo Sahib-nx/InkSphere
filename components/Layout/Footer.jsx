@@ -169,7 +169,7 @@ export default function Footer() {
       >
         <div className={styles.bottomContent}>
           <p className={styles.copyright}>
-            © 2024 TechBlog Hub. Crafted with 
+            © 2024 InkSphere. Crafted with 
             <motion.span 
               className={styles.heartIcon}
               animate={{ scale: [1, 1.2, 1] }}
@@ -177,7 +177,7 @@ export default function Footer() {
             >
               ❤️
             </motion.span>
-            by developers, for developers.
+            by developer, for developers.
           </p>
           
           <motion.button

@@ -35,7 +35,7 @@ export default function AddBlog() {
 
   // Don't render anything while checking auth, or if not authorized
   if (authLoading || !authorized || showInitialLoading) {
-    if (showInitialLoading) {
+    
       return (
         <AnimatePresence>
           <motion.div
@@ -107,8 +107,6 @@ export default function AddBlog() {
           </motion.div>
         </AnimatePresence>
       );
-    }
-    return null;
   }
 
   const generateSlug = (text) =>
