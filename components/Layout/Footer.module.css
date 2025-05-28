@@ -1,4 +1,4 @@
-:root {
+:global(:root) {
   --primary-color: #5e60ce;
   --primary-light: #7400b8;
   --secondary-color: #48bfe3;

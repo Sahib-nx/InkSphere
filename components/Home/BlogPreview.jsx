@@ -51,7 +51,7 @@ export default function BlogPreview({ blogs, loading }) {
                     viewport={{ once: true }}
                 >
                     {Array.isArray(blogs) && blogs.slice(0, 6).map((blog, index) => (
-                        <BlogCard key={blog._id || index} blog={blog} index={index} />
+                      <BlogCard key={blog._id} blog={blog} index={index} />
                     ))}
                 </motion.div>
 
