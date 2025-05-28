@@ -1,6 +1,6 @@
 'use client'
-import Footer from '@/components/Layout/Footer'
-import Navbar from '@/components/Layout/Navbar'
+import Navbar from '../components/Layout/Navbar';
+import Footer from '../components/Layout/Footer';
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useState } from 'react'

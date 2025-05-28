@@ -6,8 +6,8 @@ import React from 'react'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import '../styles/Login.css';
-import Navbar from '@/components/Layout/Navbar'
-import Footer from '@/components/Layout/Footer'
+import Navbar from '../components/Layout/Navbar';
+import Footer from '../components/Layout/Footer';
 import Link from 'next/link';
 
 function logn() {
