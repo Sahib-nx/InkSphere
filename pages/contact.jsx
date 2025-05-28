@@ -576,7 +576,8 @@ export default function Contact() {
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
                 letterSpacing: '-0.02em',
-                lineHeight: '1.1'
+                lineHeight: '1.1',
+                paddingTop: '3rem'
               }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
