@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import '../styles/Register.css';
 import Link from 'next/link';
 
 

@@ -6,7 +6,7 @@ import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
 import BlogCard from '../components/UI/BlogCard';
 import useAuthCheck from '@/utils/IsAuthorised';
-import '../styles/UserDashboard.css';
+
 
 const UserDashboard = () => {
   const [blogs, setBlogs] = useState([]);

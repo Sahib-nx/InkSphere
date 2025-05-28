@@ -6,6 +6,7 @@ import Footer from '../components/Layout/Footer';
 import useAuthCheck from '@/utils/IsAuthorised';
 import '../styles/add-blog.css';
 
+
 export default function AddBlog() {
   const [formData, setFormData] = useState({
     title: '',

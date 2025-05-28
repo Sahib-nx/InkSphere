@@ -5,7 +5,7 @@ import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
 import { FaCode, FaUsers, FaLightbulb, FaHeart } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
-import '../styles/About.css';
+
 
 export default function About() {
   const [showInitialLoading, setShowInitialLoading] = useState(true);
