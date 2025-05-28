@@ -1,0 +1,341 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+/* Import Font Awesome */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+
+
+
+:root {
+    --primary-color: #5e60ce;
+    --primary-light: #7400b8;
+    --secondary-color: #48bfe3;
+    --text-color: #333;
+    --text-light: #666;
+    --background-color: #f5f7ff;
+    --card-background: #ffffff;
+    --input-background: #f5f7ff;
+    --border-radius: 12px;
+    --box-shadow: 0 8px 24px rgba(149, 157, 165, 0.15);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.register-card {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 450px;
+    overflow: hidden;
+    padding: 30px;
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.card-header h2 {
+    color: var(--primary-color);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    animation: slideDown 0.8s ease forwards;
+}
+
+.card-header p {
+    color: var(--text-light);
+    font-size: 16px;
+    animation: slideDown 0.8s 0.2s ease forwards;
+    opacity: 0;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    position: relative;
+    animation: slideUp 0.8s ease forwards;
+}
+
+.form-group:nth-child(1) {
+    animation-delay: 0.2s;
+    opacity: 0;
+}
+
+.form-group:nth-child(2) {
+    animation-delay: 0.4s;
+    opacity: 0;
+}
+
+.form-group:nth-child(3) {
+    animation-delay: 0.6s;
+    opacity: 0;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px 45px 15px 15px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background-color: var(--input-background);
+    font-size: 16px;
+    transition: var(--transition);
+    outline: none;
+    color: var(--text-color);
+}
+
+.form-group input:focus,
+.form-group input.has-value {
+    border-color: var(--primary-color);
+}
+
+.form-group label {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    color: var(--text-light);
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.form-group input:focus~label,
+.form-group input.has-value~label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    background-color: var(--card-background);
+    padding: 0 5px;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    transition: var(--transition);
+}
+
+.form-group input:focus~.input-icon,
+.form-group input.has-value~.input-icon {
+    color: var(--primary-color);
+}
+
+.register-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    animation: scaleIn 0.8s 0.8s ease forwards;
+    opacity: 0;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.register-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+    transition: 0.5s;
+}
+
+.register-btn:hover::before {
+    left: 100%;
+}
+
+.register-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(116, 0, 184, 0.2);
+}
+
+.social-register {
+    margin-top: 30px;
+    text-align: center;
+    animation: fadeIn 0.8s 1s ease forwards;
+    opacity: 0;
+}
+
+.social-register p {
+    color: var(--text-light);
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.social-register p::before,
+.social-register p::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 70px;
+    height: 1px;
+    background-color: #ddd;
+}
+
+.social-register p::before {
+    left: 0;
+}
+
+.social-register p::after {
+    right: 0;
+}
+
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+}
+
+.facebook {
+    background-color: #4267B2;
+}
+
+.google {
+    background-color: #DB4437;
+}
+
+.twitter {
+    background-color: #1DA1F2;
+}
+
+.login-link {
+    margin-top: 25px;
+    text-align: center;
+    color: var(--text-light);
+    animation: fadeIn 0.8s 1.2s ease forwards;
+    opacity: 0;
+}
+
+.login-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive styles */
+@media screen and (max-width: 480px) {
+    .register-card {
+        padding: 20px;
+    }
+
+    .card-header h2 {
+        font-size: 24px;
+    }
+
+    .social-register p::before,
+    .social-register p::after {
+        width: 50px;
+    }
+}
