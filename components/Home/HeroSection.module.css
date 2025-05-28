@@ -466,15 +466,13 @@
 @media (max-width: 768px) {
   .hero {
     min-height: 100vh;
-    padding: 2rem 0;
-    margin-top: 0;
+    margin-top: -2.9rem;
   }
 
   .heroContainer {
     height: auto;
-    min-height: auto;
+    min-height: 100vh;
     padding: 2rem 1rem;
-    margin-top: 0;
   }
 
   .heroGrid {
