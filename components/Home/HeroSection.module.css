@@ -445,7 +445,11 @@
   .heroContainer {
     height: auto;
     min-height: 100vh;
-    padding: 2rem 1rem;
+    /* padding: 2rem 1rem; */
+    padding-top: 0;
+    padding-bottom: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   
   .heroGrid {

@@ -148,7 +148,7 @@ export default function Navbar() {
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
             <motion.div className={styles.mobileMenuContent}>
-              {[...navItems, { href: '/dashboard', label: 'Dashboard', icon: <FaUserCircle /> }].map((item, index) => (
+              {[...navItems, { href: '/UserDashboard', label: 'UserDashboard', icon: <FaUserCircle /> }].map((item, index) => (
                 <motion.div
                   key={item.href}
                   initial={{ opacity: 0, x: -30 }}
