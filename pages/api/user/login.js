@@ -18,11 +18,8 @@ const login = async (req, res) => {
         await dbConnect();
 
         const { email, password } = req.body;
-
-        if (email === "", password === "") {
-
+        if (!email || !password) {
             return res.status(400).json({ message: "Please fill in all fields" });
-
         }
 
 
@@ -36,13 +33,13 @@ const login = async (req, res) => {
         }
 
 
-        const VerifyPass = bcrypt.compare(password, user.password);
+        const VerifyPass = await bcrypt.compare(password, user.password);
         if (VerifyPass) {
 
             const secretkey = process.env.JWT_SECRET_KEY;
 
             if (!secretkey) {
-                return messageHandler(res, 500,  "JWT secret key not configured");
+                return messageHandler(res, 500, "JWT secret key not configured");
             }
 
             const userId = user._id;
