@@ -1,11 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
 import useAuthCheck from '@/utils/IsAuthorised';
-
-
+import styles from '../styles/addBlog.module.css';
 
 export default function AddBlog() {
   const [formData, setFormData] = useState({
@@ -40,20 +38,20 @@ export default function AddBlog() {
       return (
         <AnimatePresence>
           <motion.div
-            className="initial-loading-overlay"
+            className={styles.initialLoadingOverlay}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             <motion.div
-              className="loading-container"
+              className={styles.loadingContainer}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
               <motion.div
-                className="loading-logo"
+                className={styles.loadingLogo}
                 animate={{
                   rotate: 360,
                   scale: [1, 1.1, 1]
@@ -63,14 +61,14 @@ export default function AddBlog() {
                   scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
                 }}
               >
-                <div className="logo-inner">
-                  <div className="logo-circle"></div>
-                  <div className="logo-dot"></div>
+                <div className={styles.logoInner}>
+                  <div className={styles.logoCircle}></div>
+                  <div className={styles.logoDot}></div>
                 </div>
               </motion.div>
 
               <motion.h2
-                className="loading-title"
+                className={styles.loadingTitle}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
@@ -79,7 +77,7 @@ export default function AddBlog() {
               </motion.h2>
 
               <motion.div
-                className="loading-dots"
+                className={styles.loadingDots}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.3 }}
@@ -99,7 +97,7 @@ export default function AddBlog() {
               </motion.div>
 
               <motion.div
-                className="loading-progress-bar"
+                className={styles.loadingProgressBar}
                 initial={{ width: 0 }}
                 animate={{ width: "100%" }}
                 transition={{ duration: 1.3, ease: "easeInOut" }}
@@ -258,21 +256,21 @@ export default function AddBlog() {
   return (
     <>
       <Navbar />
-      <div className="add-blog-container">
+      <div className={styles.addBlogContainer}>
         <motion.main
-          className="form-wrapper"
+          className={styles.formWrapper}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.h1 className="page-title" variants={itemVariants}>
+          <motion.h1 className={styles.pageTitle} variants={itemVariants}>
             Add New Blog
           </motion.h1>
 
           <AnimatePresence>
             {successMessage && (
               <motion.p
-                className="success-message"
+                className={styles.successMessage}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -286,7 +284,7 @@ export default function AddBlog() {
           <AnimatePresence>
             {errorMessages.length > 0 && (
               <motion.ul
-                className="error-list"
+                className={styles.errorList}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -307,9 +305,9 @@ export default function AddBlog() {
           </AnimatePresence>
 
           <motion.form onSubmit={handleSubmit} variants={itemVariants}>
-            <div className="form-grid">
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+            <div className={styles.formGrid}>
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Title*:
                 </label>
                 <motion.input
@@ -317,13 +315,13 @@ export default function AddBlog() {
                   name="title"
                   value={formData.title}
                   onChange={handleTitleChange}
-                  className="form-input"
+                  className={styles.formInput}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Slug*:
                 </label>
                 <motion.input
@@ -331,13 +329,13 @@ export default function AddBlog() {
                   name="slug"
                   value={formData.slug}
                   onChange={handleChange}
-                  className="form-input"
+                  className={styles.formInput}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Excerpt*:
                 </label>
                 <motion.textarea
@@ -345,13 +343,13 @@ export default function AddBlog() {
                   value={formData.excerpt}
                   onChange={handleChange}
                   rows={3}
-                  className="form-textarea"
+                  className={styles.formTextarea}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Content*:
                 </label>
                 <motion.textarea
@@ -359,15 +357,13 @@ export default function AddBlog() {
                   value={formData.content}
                   onChange={handleChange}
                   rows={6}
-                  className="form-textarea"
+                  className={styles.formTextarea}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-
-
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Tags (comma separated):
                 </label>
                 <motion.input
@@ -375,13 +371,13 @@ export default function AddBlog() {
                   name="tags"
                   value={formData.tags}
                   onChange={handleChange}
-                  className="form-input"
+                  className={styles.formInput}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Image URL:
                 </label>
                 <motion.input
@@ -389,14 +385,14 @@ export default function AddBlog() {
                   name="image"
                   value={formData.image}
                   onChange={handleChange}
-                  className="form-input"
+                  className={styles.formInput}
                   whileFocus={{ scale: 1.01 }}
                   placeholder="Paste image URL here (e.g., from Google Images)"
                 />
 
                 {/* Image Preview */}
                 <motion.div
-                  className={`image-preview-container ${formData.image && !imageError ? 'has-image' : ''}`}
+                  className={`${styles.imagePreviewContainer} ${formData.image && !imageError ? styles.hasImage : ''}`}
                   initial={{ opacity: 0, height: 0 }}
                   animate={{
                     opacity: 1,
@@ -413,7 +409,7 @@ export default function AddBlog() {
                       <img
                         src={formData.image}
                         alt="Blog post preview"
-                        className="image-preview"
+                        className={styles.imagePreview}
                         onError={() => setImageError(true)}
                         onLoad={() => setImageError(false)}
                       />
@@ -422,36 +418,36 @@ export default function AddBlog() {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="image-placeholder"
+                      className={styles.imagePlaceholder}
                     >
                       <div>
                         <p>❌ Unable to load image</p>
-                        <p className="image-error">Please check the URL or try a different image</p>
+                        <p className={styles.imageError}>Please check the URL or try a different image</p>
                       </div>
                     </motion.div>
                   ) : (
-                    <div className="image-placeholder">
+                    <div className={styles.imagePlaceholder}>
                       📷 Image preview will appear here when you add a URL
                     </div>
                   )}
                 </motion.div>
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   OR Choose From Locally:
                 </label>
                 <motion.input
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
-                  className="form-input file-input"
+                  className={`${styles.formInput} ${styles.fileInput}`}
                   whileFocus={{ scale: 1.01 }}
                 />
 
                 {/* File Preview */}
                 <motion.div
-                  className={`image-preview-container ${filePreview ? 'has-image' : ''}`}
+                  className={`${styles.imagePreviewContainer} ${filePreview ? styles.hasImage : ''}`}
                   initial={{ opacity: 0, height: 0 }}
                   animate={{
                     opacity: 1,
@@ -468,14 +464,14 @@ export default function AddBlog() {
                       <img
                         src={filePreview}
                         alt="Selected file preview"
-                        className="image-preview"
+                        className={styles.imagePreview}
                       />
-                      <p className="file-info">
+                      <p className={styles.fileInfo}>
                         Selected: {selectedFile?.name} ({(selectedFile?.size / 1024).toFixed(1)} KB)
                       </p>
                     </motion.div>
                   ) : (
-                    <div className="image-placeholder">
+                    <div className={styles.imagePlaceholder}>
                       📁 File preview will appear here when you select a file
                     </div>
                   )}
@@ -485,12 +481,12 @@ export default function AddBlog() {
               <motion.button
                 type="submit"
                 disabled={loading}
-                className="submit-button"
+                className={styles.submitButton}
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
               >
-                {loading && <span className="loading-spinner"></span>}
+                {loading && <span className={styles.loadingSpinner}></span>}
                 {loading ? 'Adding...' : 'Add Blog'}
               </motion.button>
             </div>

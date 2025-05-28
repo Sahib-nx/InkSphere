@@ -213,11 +213,25 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.blue { background: #3b82f6; }
-.green { background: #10b981; }
-.purple { background: #8b5cf6; }
-.red { background: #ef4444; }
-.yellow { background: #f59e0b; }
+.blue {
+  background: #3b82f6;
+}
+
+.green {
+  background: #10b981;
+}
+
+.purple {
+  background: #8b5cf6;
+}
+
+.red {
+  background: #ef4444;
+}
+
+.yellow {
+  background: #f59e0b;
+}
 
 .iconSvg {
   width: 1.5rem;
@@ -367,6 +381,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -374,36 +389,48 @@
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-20px);
   }
 }
 
 @keyframes floatDelayed {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-15px);
   }
 }
 
 @keyframes floatSlow {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.2;
   }
+
   50% {
     opacity: 0.4;
   }
@@ -416,20 +443,20 @@
     gap: 3rem;
     text-align: center;
   }
-  
+
   .heroContent {
     padding-right: 0;
     order: 1;
   }
-  
+
   .animationContainer {
     order: 2;
   }
-  
+
   .heroTitle {
     font-size: 3rem;
   }
-  
+
   .blogCardsContainer {
     width: 280px;
     height: 350px;
@@ -440,72 +467,63 @@
   .hero {
     min-height: 100vh;
     padding: 2rem 0;
+    margin-top: 0;
   }
-  
+
   .heroContainer {
     height: auto;
-    min-height: 100vh;
-    /* padding: 2rem 1rem; */
-    padding-top: 0;
-    padding-bottom: 2rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    min-height: auto;
+    padding: 2rem 1rem;
+    margin-top: 0;
   }
-  
+
   .heroGrid {
     gap: 2rem;
   }
-  
+
   .heroTitle {
     font-size: 2.5rem;
   }
-  
+
   .heroSubtitle {
     font-size: 1.125rem;
     margin-bottom: 2rem;
   }
-  
+
   .heroButtons {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
   }
-  
+
   .ctaButton,
   .secondaryButton {
     width: 100%;
     max-width: 300px;
     padding: 1rem 2rem;
   }
-  
+
   .blogCardsContainer {
     width: 260px;
     height: 320px;
   }
-  
-  .cardContent {
-    padding: 1.25rem;
-  }
-  
-  .float3 {
-    display: none;
-  }
+
 }
 
 @media (max-width: 480px) {
   .heroTitle {
     font-size: 2rem;
   }
-  
+
   .heroSubtitle {
     font-size: 1rem;
   }
-  
+
   .blogCardsContainer {
     width: 240px;
     height: 300px;
   }
-  
+
   .float2 {
     display: none;
   }
