@@ -28,7 +28,7 @@ const useAuthCheck = () => {
         }
       } catch (err) {
         toast.error("Bad Authentication! Kindly login again.");
-        router.push("/logn");
+        router.push("/loginn");
       } finally {
         setAuthLoading(false);
       }
