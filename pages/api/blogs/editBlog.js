@@ -1,15 +1,16 @@
+import { messageHandler } from '@/utils/messageHandler';
 import dbConnect from '../../../lib/mongodb';
 import Blog from '../../../models/Blog';
 
 export default async function handler(req, res) {
   if (req.method !== 'PUT') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return messageHandler(res, 405, 'Method not allowed');
   }
 
   const { id, title, slug, excerpt, content, author, tags, image } = req.body;
 
   if (!id) {
-    return res.status(400).json({ message: 'Blog id is required' });
+    return messageHandler(res, 400, 'Blog id is required')
   }
 
   try {
@@ -30,7 +31,7 @@ export default async function handler(req, res) {
     const updatedBlog = await Blog.findByIdAndUpdate(id, updateData, { new: true });
 
     if (!updatedBlog) {
-      return res.status(404).json({ message: 'Blog not found' });
+      return messageHandler(res, 404, 'Blog not found');
     }
 
     return res.status(200).json({ message: 'Blog updated successfully', blog: updatedBlog });

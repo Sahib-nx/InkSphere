@@ -26,6 +26,10 @@ const BlogSchema = new mongoose.Schema({
   tags: [{
     type: String
   }],
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment'
+  }],
   image: {
     type: String,
     default: '/images/default-blog.jpg'

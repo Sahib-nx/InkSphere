@@ -1,132 +1,122 @@
 import dbConnect from '../../../lib/mongodb';
 import Blog from '../../../models/Blog';
+import Comment from '../../../models/Comment';
 import jwt from 'jsonwebtoken';
-import mongoose from 'mongoose';
 import { User } from '../../../models/userModel';
 
-// Helper function to validate blog data
-function validateBlogData(data) {
+
+const validateBlogData = (data) => {
+  const requiredFields = ['title', 'slug', 'excerpt', 'content'];
   const errors = [];
 
-  if (!data.title || typeof data.title !== 'string' || !data.title.trim()) {
-    errors.push('Title is required and must be a non-empty string.');
-  }
-  if (!data.slug || typeof data.slug !== 'string' || !data.slug.trim()) {
-    errors.push('Slug is required and must be a non-empty string.');
-  }
-  if (!data.excerpt || typeof data.excerpt !== 'string' || !data.excerpt.trim()) {
-    errors.push('Excerpt is required and must be a non-empty string.');
-  }
-  if (!data.content || typeof data.content !== 'string' || !data.content.trim()) {
-    errors.push('Content is required and must be a non-empty string.');
-  }
-  // Removed author validation from request body
-  if (data.tags && !Array.isArray(data.tags)) {
-    errors.push('Tags must be an array of strings.');
-  } else if (data.tags) {
-    for (const tag of data.tags) {
-      if (typeof tag !== 'string') {
-        errors.push('Each tag must be a string.');
-        break;
-      }
+  requiredFields.forEach(field => {
+    if (!data[field] || typeof data[field] !== 'string' || !data[field].trim()) {
+      errors.push(`${field.charAt(0).toUpperCase() + field.slice(1)} is required and must be a non-empty string.`);
+    }
+  });
+
+  if (data.tags) {
+    if (!Array.isArray(data.tags)) {
+      errors.push('Tags must be an array of strings.');
+    } else if (data.tags.some(tag => typeof tag !== 'string')) {
+      errors.push('Each tag must be a string.');
     }
   }
 
   return errors;
-}
+};
 
-export default async function handler(req, res) {
-  try {
-    await dbConnect();
-  } catch (dbError) {
-    console.error('Database connection error:', dbError);
-    return res.status(500).json({ error: 'Database connection failed' });
+const authenticateUser = async (token) => {
+  if (!token) throw new Error('Authentication token missing');
+  
+  const secretkey = process.env.JWT_SECRET_KEY;
+  if (!secretkey) throw new Error('JWT secret key not configured');
+  
+  const verified = jwt.verify(token, secretkey);
+  const user = await User.findById(verified.userId);
+  if (!user) throw new Error('User not found');
+  
+  return user;
+};
+
+const handleGet = async (req, res) => {
+  const { id, author, slug } = req.query;
+  
+  if (id) {
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ error: 'Invalid blog id format' });
+    }
+    const blog = await Blog.findById(id).populate({
+      path: 'comments',
+      populate: { path: 'author', select: 'username' }
+    });
+    if (!blog) {
+      return res.status(404).json({ error: 'Blog not found' });
+    }
+    return res.status(200).json([blog]);
   }
 
-  if (req.method === 'GET') {
-    try {
-      const { id, author, slug } = req.query;
-      if (id) {
-        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-          return res.status(400).json({ error: 'Invalid blog id format' });
-        }
-        const blog = await Blog.findById(id);
-        if (!blog) {
-          return res.status(404).json({ error: 'Blog not found' });
-        }
-        return res.status(200).json([blog]);
-      }
-      let filter = {};
-      if (author) {
-        filter.author = author;
-      }
-      if (slug) {
-        filter.slug = slug;
-      }
-      const blogs = await Blog.find(filter);
-      return res.status(200).json(blogs);
-    } catch (error) {
-      console.error('Error fetching blogs:', error);
-      return res.status(500).json({ error: 'Failed to fetch blogs' });
+  const filter = {};
+  if (author) filter.author = author;
+  if (slug) filter.slug = slug;
+
+  const blogs = await Blog.find(filter).populate({
+    path: 'comments',
+    populate: { path: 'author', select: 'username' }
+  }).lean();
+
+  return res.status(200).json(Array.isArray(blogs) ? blogs : blogs ? [blogs] : []);
+};
+
+const handlePost = async (req, res) => {
+  const user = await authenticateUser(req.cookies.token);
+  
+  const errors = validateBlogData(req.body);
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
+
+  const sanitizedData = {
+    title: req.body.title.trim(),
+    slug: req.body.slug.trim(),
+    excerpt: req.body.excerpt.trim(),
+    content: req.body.content.trim(),
+    author: user.username,
+    tags: req.body.tags?.map(tag => tag.trim()) || [],
+    ...(req.body.image && { image: req.body.image.trim() })
+  };
+
+  const blog = new Blog(sanitizedData);
+  const result = await blog.save();
+  
+  user.blogs.push(result._id);
+  await user.save();
+
+  return res.status(201).json(result);
+};
+
+export default async function handler(req, res) {
+  await dbConnect();
+
+  try {
+    switch (req.method) {
+      case 'GET':
+        return await handleGet(req, res);
+      case 'POST':
+        return await handlePost(req, res);
+      default:
+        res.setHeader('Allow', ['GET', 'POST']);
+        return res.status(405).json({ error: `Method ${req.method} not allowed` });
     }
-  } else if (req.method === 'POST') {
-    // Verify token from cookies
-    const { token } = req.cookies;
-    if (!token) {
-      return res.status(401).json({ error: 'Authentication token missing' });
+  } catch (error) {
+    console.error(`Error in ${req.method} request:`, error);
+    
+    if (error.name === 'JsonWebTokenError' || error.message.includes('token')) {
+      return res.status(401).json({ error: error.message });
     }
-
-    const secretkey = process.env.JWT_SECRET_KEY;
-    if (!secretkey) {
-      return res.status(500).json({ error: 'JWT secret key not configured' });
-    }
-
-    let verified;
-    try {
-      verified = jwt.verify(token, secretkey);
-      console.log('Verified token payload:', verified);
-    } catch (error) {
-      console.error('Token verification error:', error);
-      return res.status(401).json({ error: 'Invalid authentication token' });
-    }
-
-    // Fetch user by userId from token
-    const user = await User.findById(verified.userId);
-    if (!user) {
-      return res.status(401).json({ error: 'User not found' });
-    }
-
-    const errors = validateBlogData(req.body);
-    if (errors.length > 0) {
-      return res.status(400).json({ errors });
-    }
-
-    // Sanitize and trim string fields, assign author from user.username
-    const sanitizedData = {
-      title: req.body.title.trim(),
-      slug: req.body.slug.trim(),
-      excerpt: req.body.excerpt.trim(),
-      content: req.body.content.trim(),
-      author: user.username,
-      tags: req.body.tags ? req.body.tags.map(tag => tag.trim()) : [],
-      image: req.body.image ? req.body.image.trim() : undefined,
-    };
-
-    try {
-      const blog = new Blog(sanitizedData);
-      const result = await blog.save();
-
-      // Update user's blogs array
-      user.blogs.push(result._id);
-      await user.save();
-
-      res.status(201).json(result);
-    } catch (error) {
-      console.error('Error creating blog:', error);
-      res.status(500).json({ error: 'Failed to create blog' });
-    }
-  } else {
-    res.setHeader('Allow', ['GET', 'POST']);
-    res.status(405).json({ error: `Method ${req.method} not allowed` });
+    
+    return res.status(500).json({ 
+      error: req.method === 'GET' ? 'Failed to fetch blogs' : 'Failed to create blog' 
+    });
   }
 }

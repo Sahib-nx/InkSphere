@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
     email: { type: String },
     password: { type: String },
 
-    blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+    blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 
 },
 

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../../components/Layout/Navbar';
 import Footer from '../../components/Layout/Footer';
 import useAuthCheck from '@/utils/IsAuthorised';
+import styles from '../../styles/EditBlog.module.css';
 
 const EditBlog = () => {
   const router = useRouter();
@@ -22,6 +23,8 @@ const EditBlog = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
   const [error, setError] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [filePreview, setFilePreview] = useState('');
 
   const generateSlug = (text) =>
     text
@@ -39,12 +42,27 @@ const EditBlog = () => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setFilePreview(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setSelectedFile(null);
+      setFilePreview('');
+    }
+  };
+
   // Render error message if any error occurs during fetch or authorization
   if (error) {
     return (
       <>
         <Navbar />
-        <div style={{ maxWidth: '700px', margin: '2rem auto', padding: '1rem', color: 'red', fontWeight: 'bold' }}>
+        <div className={styles.errorContainer}>
           {error}
         </div>
         <Footer />
@@ -195,261 +213,22 @@ const EditBlog = () => {
 
   return (
     <>
-      <style jsx global>{`
-        :root {
-          --primary-color: #5e60ce;
-          --primary-light: #7400b8;
-          --secondary-color: #48bfe3;
-          --text-color: #333;
-          --text-light: #666;
-        }
-
-        .add-blog-container {
-          min-height: 100vh;
-          background: linear-gradient(135deg, 
-            rgba(94, 96, 206, 0.1) 0%, 
-            rgba(72, 191, 227, 0.1) 50%, 
-            rgba(116, 0, 184, 0.1) 100%);
-          padding: 2rem 0;
-        }
-
-        .form-wrapper {
-          max-width: 700px;
-          margin: 2rem auto;
-          padding: 2rem;
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(10px);
-          border-radius: 20px;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .page-title {
-          font-size: 2.5rem;
-          font-weight: 700;
-          background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-align: center;
-          margin-bottom: 2rem;
-          letter-spacing: -0.5px;
-        }
-
-        .success-message {
-          background: linear-gradient(135deg, #10b981, #059669);
-          color: white;
-          padding: 1rem 1.5rem;
-          border-radius: 12px;
-          margin-bottom: 1.5rem;
-          font-weight: 500;
-          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
-
-        .error-list {
-          background: linear-gradient(135deg, #ef4444, #dc2626);
-          color: white;
-          padding: 1rem 1.5rem;
-          border-radius: 12px;
-          margin-bottom: 1.5rem;
-          list-style: none;
-          box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        }
-
-        .error-list li {
-          margin-bottom: 0.5rem;
-          padding-left: 1rem;
-          position: relative;
-        }
-
-        .error-list li:before {
-          content: "•";
-          position: absolute;
-          left: 0;
-          font-weight: bold;
-        }
-
-        .form-grid {
-          display: grid;
-          gap: 1.5rem;
-        }
-
-        .form-group {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .form-label {
-          font-weight: 600;
-          color: var(--text-color);
-          font-size: 0.9rem;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .form-input, .form-textarea {
-          padding: 1rem 1.25rem;
-          border: 2px solid #e5e7eb;
-          border-radius: 12px;
-          font-size: 1rem;
-          background: white;
-          transition: all 0.3s ease;
-          font-family: inherit;
-        }
-
-        .form-input:focus, .form-textarea:focus {
-          outline: none;
-          border-color: var(--primary-color);
-          box-shadow: 0 0 0 3px rgba(94, 96, 206, 0.1);
-          transform: translateY(-1px);
-        }
-
-        .form-textarea {
-          resize: vertical;
-          min-height: 100px;
-        }
-
-        .form-textarea[rows="6"] {
-          min-height: 150px;
-        }
-
-        .submit-button {
-          background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-          color: white;
-          border: none;
-          padding: 1rem 2rem;
-          border-radius: 12px;
-          font-size: 1.1rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          margin-top: 1rem;
-          box-shadow: 0 8px 20px rgba(94, 96, 206, 0.3);
-        }
-
-        .submit-button:hover:not(:disabled) {
-          box-shadow: 0 12px 25px rgba(94, 96, 206, 0.4);
-          transform: translateY(-2px);
-        }
-
-        .submit-button:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-          transform: none;
-        }
-
-        .loading-spinner {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          border: 2px solid transparent;
-          border-top: 2px solid currentColor;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin-right: 0.5rem;
-        }
-
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-
-        .image-preview-container {
-          margin-top: 1rem;
-          border: 2px dashed #e5e7eb;
-          border-radius: 12px;
-          padding: 1rem;
-          background: #f9fafb;
-          transition: all 0.3s ease;
-        }
-
-        .image-preview-container.has-image {
-          border-color: var(--primary-color);
-          background: linear-gradient(135deg, 
-            rgba(94, 96, 206, 0.05) 0%, 
-            rgba(72, 191, 227, 0.05) 50%, 
-            rgba(116, 0, 184, 0.05) 100%);
-        }
-
-        .image-preview {
-          width: 100%;
-          max-width: 400px;
-          height: 200px;
-          object-fit: cover;
-          border-radius: 8px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          transition: transform 0.3s ease;
-        }
-
-        .image-preview:hover {
-          transform: scale(1.02);
-        }
-
-        .image-placeholder {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 120px;
-          color: var(--text-light);
-          font-style: italic;
-          text-align: center;
-        }
-
-        .image-error {
-          color: #ef4444;
-          font-size: 0.875rem;
-          margin-top: 0.5rem;
-          font-style: italic;
-        }
-
-        @media (max-width: 768px) {
-          .form-wrapper {
-            margin: 1rem;
-            padding: 1.5rem;
-            border-radius: 16px;
-          }
-
-          .page-title {
-            font-size: 2rem;
-          }
-
-          .form-input, .form-textarea {
-            padding: 0.875rem 1rem;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .add-blog-container {
-            padding: 1rem 0;
-          }
-
-          .form-wrapper {
-            margin: 0.5rem;
-            padding: 1rem;
-          }
-
-          .page-title {
-            font-size: 1.75rem;
-          }
-        }
-      `}</style>
-
       <Navbar />
-      <div className="add-blog-container">
+      <div className={styles.addBlogContainer}>
         <motion.main
-          className="form-wrapper"
+          className={styles.formWrapper}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.h1 className="page-title" variants={itemVariants}>
+          <motion.h1 className={styles.pageTitle} variants={itemVariants}>
             Edit Blog
           </motion.h1>
 
           <AnimatePresence>
             {successMessage && (
               <motion.p
-                className="success-message"
+                className={styles.successMessage}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -462,7 +241,7 @@ const EditBlog = () => {
           <AnimatePresence>
             {errorMessages.length > 0 && (
               <motion.ul
-                className="error-list"
+                className={styles.errorList}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -483,9 +262,9 @@ const EditBlog = () => {
           </AnimatePresence>
 
           <motion.form onSubmit={handleSubmit} variants={itemVariants}>
-            <div className="form-grid">
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+            <div className={styles.formGrid}>
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Title*:
                 </label>
                 <motion.input
@@ -493,13 +272,13 @@ const EditBlog = () => {
                   name="title"
                   value={formData.title}
                   onChange={handleTitleChange}
-                  className="form-input"
+                  className={styles.formInput}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Slug*:
                 </label>
                 <motion.input
@@ -507,13 +286,13 @@ const EditBlog = () => {
                   name="slug"
                   value={formData.slug}
                   onChange={handleChange}
-                  className="form-input"
+                  className={styles.formInput}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Excerpt*:
                 </label>
                 <motion.textarea
@@ -521,13 +300,13 @@ const EditBlog = () => {
                   value={formData.excerpt}
                   onChange={handleChange}
                   rows={3}
-                  className="form-textarea"
+                  className={styles.formTextarea}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Content*:
                 </label>
                 <motion.textarea
@@ -535,13 +314,13 @@ const EditBlog = () => {
                   value={formData.content}
                   onChange={handleChange}
                   rows={6}
-                  className="form-textarea"
+                  className={styles.formTextarea}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Tags (comma separated):
                 </label>
                 <motion.input
@@ -549,13 +328,13 @@ const EditBlog = () => {
                   name="tags"
                   value={formData.tags}
                   onChange={handleChange}
-                  className="form-input"
+                  className={styles.formInput}
                   whileFocus={{ scale: 1.01 }}
                 />
               </motion.div>
 
-              <motion.div className="form-group" variants={itemVariants}>
-                <label className="form-label">
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
                   Image URL:
                 </label>
                 <motion.input
@@ -563,13 +342,13 @@ const EditBlog = () => {
                   name="image"
                   value={formData.image}
                   onChange={handleChange}
-                  className="form-input"
+                  className={styles.formInput}
                   whileFocus={{ scale: 1.01 }}
                   placeholder="Paste image URL here (e.g., from Google Images)"
                 />
 
                 <motion.div
-                  className={`image-preview-container ${formData.image && !false ? 'has-image' : ''}`}
+                  className={`${styles.imagePreviewContainer} ${formData.image && !false ? styles.hasImage : ''}`}
                   initial={{ opacity: 0, height: 0 }}
                   animate={{
                     opacity: 1,
@@ -586,7 +365,7 @@ const EditBlog = () => {
                       <img
                         src={formData.image}
                         alt="Blog post preview"
-                        className="image-preview"
+                        className={styles.imagePreview}
                         onError={() => { }}
                         onLoad={() => { }}
                       />
@@ -595,16 +374,60 @@ const EditBlog = () => {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="image-placeholder"
+                      className={styles.imagePlaceholder}
                     >
                       <div>
                         <p>❌ Unable to load image</p>
-                        <p className="image-error">Please check the URL or try a different image</p>
+                        <p className={styles.imageError}>Please check the URL or try a different image</p>
                       </div>
                     </motion.div>
                   ) : (
-                    <div className="image-placeholder">
+                    <div className={styles.imagePlaceholder}>
                       📷 Image preview will appear here when you add a URL
+                    </div>
+                  )}
+                </motion.div>
+              </motion.div>
+
+              <motion.div className={styles.formGroup} variants={itemVariants}>
+                <label className={styles.formLabel}>
+                  OR Choose From Locally:
+                </label>
+                <motion.input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className={`${styles.formInput} ${styles.fileInput}`}
+                  whileFocus={{ scale: 1.01 }}
+                />
+
+                <motion.div
+                  className={`${styles.imagePreviewContainer} ${filePreview ? styles.hasImage : ''}`}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{
+                    opacity: 1,
+                    height: 'auto',
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  {filePreview ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <img
+                        src={filePreview}
+                        alt="Selected file preview"
+                        className={styles.imagePreview}
+                      />
+                      <p className={styles.fileInfo}>
+                        Selected: {selectedFile?.name} ({(selectedFile?.size / 1024).toFixed(1)} KB)
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <div className={styles.imagePlaceholder}>
+                      📁 File preview will appear here when you select a file
                     </div>
                   )}
                 </motion.div>
@@ -613,12 +436,12 @@ const EditBlog = () => {
               <motion.button
                 type="submit"
                 disabled={loading}
-                className="submit-button"
+                className={styles.submitButton}
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
               >
-                {loading && <span className="loading-spinner"></span>}
+                {loading && <span className={styles.loadingSpinner}></span>}
                 {loading ? 'Updating...' : 'Update Blog'}
               </motion.button>
             </div>

@@ -22,9 +22,8 @@ const Notification = ({ message, type, isVisible, onClose }) => {
   )
 }
 
-function Register() {
+function Logn() {
   const [formData, setFormData] = useState({
-    username: '',
     email: '',
     password: ''
   })
@@ -63,52 +62,19 @@ function Register() {
     setNotification(prev => ({ ...prev, isVisible: false }))
   }
 
-  const validateForm = () => {
-    const { username, email, password } = formData
-
-    if (!username.trim()) {
-      showNotification('Username is required', 'error')
-      return false
-    }
-
-    if (username.trim().length < 3) {
-      showNotification('Username must be at least 3 characters long', 'error')
-      return false
-    }
-
-    if (!email.trim()) {
-      showNotification('Email is required', 'error')
-      return false
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      showNotification('Please enter a valid email address', 'error')
-      return false
-    }
-
-    if (!password) {
-      showNotification('Password is required', 'error')
-      return false
-    }
-
-    if (password.length < 6) {
-      showNotification('Password must be at least 6 characters long', 'error')
-      return false
-    }
-
-    return true
-  }
-
-  const handleRegister = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     
-    if (!validateForm()) return
+    // Basic validation
+    if (!formData.email.trim() || !formData.password.trim()) {
+      showNotification('Please fill in all fields', 'error')
+      return
+    }
 
     setIsLoading(true)
 
     try {
-      const response = await fetch('/api/user/register', {
+      const response = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,11 +85,10 @@ function Register() {
       const data = await response.json()
 
       if (response.ok) {
-        showNotification(data.message || 'Account created successfully!', 'success')
+        showNotification(data.message || 'Login successful!', 'success')
         
         // Clear form
         setFormData({
-          username: '',
           email: '',
           password: ''
         })
@@ -133,10 +98,10 @@ function Register() {
           router.push('/UserDashboard')
         }, 1500)
       } else {
-        showNotification(data.message || 'Registration failed. Please try again.', 'error')
+        showNotification(data.message || 'Login failed. Please try again.', 'error')
       }
     } catch (error) {
-      console.error('Registration error:', error)
+      console.error('Login error:', error)
       showNotification('Network error. Please check your connection and try again.', 'error')
     } finally {
       setIsLoading(false)
@@ -155,29 +120,14 @@ function Register() {
         onClose={hideNotification}
       />
       
-      <div className="register-container">
-        <div className="register-card">
+      <div className="login-container">
+        <div className="login-card">
           <div className="card-header">
-            <h2>Create Account</h2>
-            <p>Join our social community</p>
+            <h2>Welcome Back</h2>
+            <p>Log in to your account</p>
           </div>
 
-          <form onSubmit={handleRegister} className="register-form">
-            <div className="form-group">
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                className={formData.username ? 'has-value' : ''}
-                disabled={isLoading}
-                required
-              />
-              <label htmlFor="username">Username</label>
-              <i className="fa fa-user input-icon"></i>
-            </div>
-
+          <form onSubmit={handleLogin} className="login-form">
             <div className="form-group">
               <input
                 type="email"
@@ -187,7 +137,7 @@ function Register() {
                 onChange={handleChange}
                 className={formData.email ? 'has-value' : ''}
                 disabled={isLoading}
-                required
+                required 
               />
               <label htmlFor="email">Email Address</label>
               <i className="fa fa-envelope input-icon"></i>
@@ -202,33 +152,37 @@ function Register() {
                 onChange={handleChange}
                 className={formData.password ? 'has-value' : ''}
                 disabled={isLoading}
-                required
+                required 
               />
               <label htmlFor="password">Password</label>
               <i className="fa fa-lock input-icon"></i>
             </div>
 
+            <div className="forgot-password">
+              <Link href="/forgot-password">Forgot password?</Link>
+            </div>
+
             <button 
               type="submit" 
-              className={`register-btn ${isLoading ? 'loading' : ''}`}
+              className={`login-btn ${isLoading ? 'loading' : ''}`}
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
-                  <span>Creating Account...</span>
+                  <span>Signing In...</span>
                   <i className="fa fa-spinner fa-spin"></i>
                 </>
               ) : (
                 <>
-                  <span>Join Now</span>
-                  <i className="fa fa-arrow-right"></i>
+                  <span>Sign In</span>
+                  <i className="fa fa-sign-in-alt"></i>
                 </>
               )}
             </button>
           </form>
 
-          <div className="social-register">
-            <p>Or sign up with</p>
+          <div className="social-login">
+            <p>Or sign in with</p>
             <div className="social-buttons">
               <button className="social-btn facebook" type="button">
                 <i className="fab fa-facebook-f"></i>
@@ -242,15 +196,15 @@ function Register() {
             </div>
           </div>
 
-          <div className="login-link">
-            <p>Already have an account? <Link href="/login">Sign In</Link></p>
+          <div className="register-link">
+            <p>Don't have an account? <Link href="/register">Sign Up</Link></p>
           </div>
         </div>
       </div>
       
       <Footer />
       
-      <style jsx>{`
+      <style jsx global>{`
         .notification {
           position: fixed;
           top: 20px;
@@ -301,12 +255,12 @@ function Register() {
           background-color: rgba(255, 255, 255, 0.2);
         }
         
-        .register-btn.loading {
+        .login-btn.loading {
           opacity: 0.8;
           cursor: not-allowed;
         }
         
-        .register-btn:disabled {
+        .login-btn:disabled {
           pointer-events: none;
         }
         
@@ -338,4 +292,4 @@ function Register() {
   )
 }
 
-export default Register
+export default Logn
