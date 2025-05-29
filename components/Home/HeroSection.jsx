@@ -59,7 +59,7 @@ export default function HeroSection() {
               </button>
               
               <button className={styles.secondaryButton}>
-              <Link href={"/add-blog"}> Start Writing</Link>
+              <Link href={"/add-blog"}>Start Writing</Link>
               </button>
             </div>
           </div>
