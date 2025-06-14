@@ -19,7 +19,9 @@ const login = async (req, res) => {
 
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(400).json({ message: "Please fill in all fields" });
+
+            return messageHandler(res, 400, "All Fields Are Required");
+
         }
 
 
@@ -28,8 +30,7 @@ const login = async (req, res) => {
 
         if (!user) {
 
-            return res.status(400).json({ message: "User Not Found With This Email" });
-
+            return messageHandler(res, 400, "User Not Found With This Email");
         }
 
 
@@ -54,19 +55,19 @@ const login = async (req, res) => {
                 `token=${token}; HttpOnly; Path=/; SameSite=Strict; Expires=${expires}`
             );
 
-            return res.status(200).json({ message: "Login Successfull" });
-
+            return messageHandler(res, 200, "Login Successfull" )
+          
         } else {
 
-            return res.status(400).json({ message: "Invalid Password" });
+            return messageHandler(res, 400, "Invalid Password" );
 
         }
 
 
     } catch (error) {
 
-        console.error("LOGIN ERROR:", error); // <--- Add this
-        return res.status(500).json({ message: "Server Error!" });
+        console.error("LOGIN ERROR:", error); 
+        return messageHandler(res, 500, "Server Error!");
 
     }
 }

@@ -58,8 +58,8 @@
 
 /* Logo Image Styles */
 .logoImage {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 10rem;
+  height: 10rem;
   object-fit: contain;
   border-radius: 50%;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));

@@ -9,7 +9,9 @@ import {
   FaBars,
   FaTimes,
   FaUserCircle,
-  FaRocket
+  FaRocket,
+  FaFeather ,
+  FaPenNib 
 } from 'react-icons/fa';
 import styles from './Navbar.module.css';
 
@@ -53,13 +55,13 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
           >
             {/* Logo Image */}
-            <motion.img
+            {/* <motion.img
               src="/logo.png" // Replace with your actual logo path
               alt="InkSphere Logo"
               className={styles.logoImage}
               whileHover={{ rotate: 15, scale: 1.1 }}
               transition={{ type: "spring", stiffness: 300 }}
-            />
+            /> */}
             
             {/* Fallback Icon (in case image doesn't load) */}
             <motion.div
@@ -67,7 +69,7 @@ export default function Navbar() {
               whileHover={{ rotate: 15, scale: 1.1 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <FaRocket />
+              <FaPenNib   />
             </motion.div>
             
             <h2 className={styles.logoText}>InkSphere</h2>

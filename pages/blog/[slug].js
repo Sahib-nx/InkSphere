@@ -381,7 +381,7 @@ export default function BlogDetail() {
 
           {/* Blog Excerpt */}
           <motion.div className={styles.blogExcerpt} variants={itemVariants}>
-            <div className={styles.quoteIcon}>`&quot`</div>
+            <div className={styles.quoteIcon}>&quot;</div>
             <p>{blog.excerpt}</p>
           </motion.div>
 

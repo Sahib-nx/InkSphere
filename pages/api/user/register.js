@@ -2,6 +2,7 @@ import dbConnect from "@/lib/mongodb";
 import { User } from "../../../models/userModel";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { messageHandler } from "@/utils/messageHandler";
 
 
 
@@ -23,8 +24,8 @@ const register = async (req, res) => {
 
         if (username === "", email === "", password === "") {
 
-            return res.status(400).json({ message: "Please fill in all fields" });
-
+            return messageHandler(res, 400, "All Fields are required" );
+           
         }
 
 
@@ -33,7 +34,7 @@ const register = async (req, res) => {
 
         if (user) {
 
-            return res.status(400).json({ message: "User already exists" });
+            return messageHandler(res, 400, "User already exists" );
 
         }
 
@@ -80,8 +81,8 @@ const register = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
-        return res.status(500).json({ message: "Server Error!" });
+        console.error("REGISTER ERROR:",error);
+        return messageHandler(res, 500, "Server Error!");
 
     }
 }
